@@ -31,7 +31,8 @@ RUN a2enmod rewrite ssl headers php5
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
+RUN rm /etc/apache2/sites-available/default
+ADD 000-default.conf /etc/apache2/sites-available/default
 
 # Fix issue with SSLMutex - https://github.com/yankcrime/dockerfiles/issues/3
 RUN mkdir /var/run/apache2
