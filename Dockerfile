@@ -31,16 +31,13 @@ RUN a2enmod rewrite ssl headers php5
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-# Set timezone
-#RUN echo $TIMEZONE > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
-#RUN sed -i "s@^;date.timezone =.*@date.timezone = $TIMEZONE@" /etc/php5/*/php.ini
-
 ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
-#https://github.com/yankcrime/dockerfiles/issues/3
+
+# Fix issue with SSLMutex - https://github.com/yankcrime/dockerfiles/issues/3
 RUN mkdir /var/run/apache2
 
-ADD app.php /var/www/app.php
-
-CMD ["/usr/sbin/apache2", "-D", "FOREGROUND"]
+ADD phpinfo.php /var/www/phpinfo.php
 
 EXPOSE 80 443
+
+CMD ["/usr/sbin/apache2", "-D", "FOREGROUND"]
